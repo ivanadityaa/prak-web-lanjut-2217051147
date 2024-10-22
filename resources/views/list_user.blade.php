@@ -5,30 +5,51 @@
     <a href="{{ route('user.create') }}" class="btn btn-success">Tambah User</a>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Nama</th>
-            <th scope="col">NPM</th>
-            <th scope="col">Kelas</th>
-            <th scope="col">Aksi</th>
-        </tr>
-    </thead>
-    <tbody class="table-group-divider">
-        <?php
+<div class="container mt-5">
+    <h1 class="text-center">List Data</h1><br>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nama</th>
+                <th scope="col">NPM</th>
+                <th scope="col">Kelas</th>
+                <th scope="col">Foto</th>
+                <th scope="col">Aksi</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <?php
       foreach ($users as $user) {
       ?>
-        <tr>
-            <td><?= $user['id'] ?></td>
-            <td><?= $user['nama'] ?></td>
-            <td><?= $user['npm'] ?></td>
-            <td><?= $user['nama_kelas'] ?></td>
-            <td></td>
-        </tr>
-        <?php
+            <tr>
+                <td><?= $user['id'] ?></td>
+                <td><?= $user['nama'] ?></td>
+                <td><?= $user['npm'] ?></td>
+                <td><?= $user['nama_kelas'] ?></td>
+                <td>
+                    <img src="{{ asset('storage/uploads/' . $user->foto) }}" alt="Foto User" width="100">
+                </td>
+                <td>
+                    <!-- View -->
+                    <a href="" class="btn btn-primary btn-sm">View</a>
+
+                    <!-- Edit -->
+                    <a href="" class="btn btn-warning btn-sm">Edit</a>
+
+                    <!-- Delete -->
+                    <form action="" method="POST" style="display:inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Apakah Anda yakin ingin menghapus user ini?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            <?php
       }
       ?>
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
 @endsection
