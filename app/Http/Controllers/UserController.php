@@ -2,43 +2,57 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kelas;
-use App\Models\User;
-use App\Models\UserModel;
 use Illuminate\Http\Request;
-use App\Http\Requests\UserRequest;
+use App\Models\Kelas;
+use App\Models\UserModel;
 
 class UserController extends Controller
 {
+    public $userModel;
+    public $kelasModel;
 
-    public function profile($nama = "", $kelas = "", $npm = ""){
-        $data = [
-            'nama' => $nama,
-            'kelas' => $kelas,
-            'npm' => $npm,
-        ];
 
-        return view('profile', $data);
+    public function __construct()
+    {
+        $this->userModel = new UserModel();
+        $this->kelasModel = new Kelas();
     }
 
+    public function index()
+{
+    $data = [
+        'title' => 'List User',
+        'users' => $this->userModel->getUser(),
+    ];
 
-    public function create(){
-        return view('create_user', [
-            'kelas' => Kelas::all(),
-        ]); 
-    }
+    return view('list_user', $data);
+}
 
-    public function store(UserRequest $request){
-        
-        $validatedData = $request->validated();
 
-        $user = UserModel::create($validatedData);
-        $user->load('kelas');
+public function create(){
+    $kelasModel = new Kelas();
 
-        return view('profile', [
-            'nama'=> $user->nama,
-            'npm'=> $user->npm,
-            'nama_kelas'=> $user->kelas->nama_kelas ?? 'Kelas tidak ditemukan',
-        ]);
-    }
+    // Mengambil data kelas menggunakan method getKelas
+    $kelas = $kelasModel->getKelas();
+
+    $data = [
+        'title' => 'Create User',
+        'kelas' => $kelas,
+    ];
+
+    return view('create_user', $data);
+}
+
+public function store(Request $request)
+{
+    $this->userModel->create([
+        'nama' => $request->input('nama'),
+        'npm' => $request->input('npm'),
+        'kelas_id' => $request->input('kelas_id'),
+    ]);
+
+    return redirect()->to('/user');
+}
+
+
 }
