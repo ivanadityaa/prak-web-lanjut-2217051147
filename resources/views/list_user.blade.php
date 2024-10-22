@@ -32,13 +32,13 @@
                 </td>
                 <td>
                     <!-- View -->
-                    <a href="" class="btn btn-primary btn-sm">View</a>
+                    <a href="{{ route('user.show', $user['id']) }}" class="btn btn-primary btn-sm">View</a>
 
                     <!-- Edit -->
-                    <a href="" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{{ route('user.edit', $user['id']) }}" class="btn btn-warning btn-sm">Edit</a>
 
                     <!-- Delete -->
-                    <form action="" method="POST" style="display:inline-block;">
+                    <form action="{{ route('user.destroy', $user['id']) }}" method="POST" style="display:inline-block;">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm"
